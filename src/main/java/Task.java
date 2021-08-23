@@ -4,10 +4,11 @@ public class Task {
 
     /**
      * Task is class that contains a description and status of the task.
-     * The status is represented by a [X] for done and a [ ] for not done and is displayed
-     * before the description. E.g. 1. [ ] buy book
+     * The status is represented by a [X] for done and a [ ] for not done
+     * and is displayed before the description.
+     * E.g. 1. [ ] buy book
      *
-     * @param description   description or name of the task
+     * @param description description or name of the task
      */
     public Task(String description) {
         this.description = description;

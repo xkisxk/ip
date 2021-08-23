@@ -24,7 +24,7 @@ public class Duke {
                 // Lists out all the tasks that are added with the command "list".
                 System.out.println("Here are the tasks in your to do list:");
                 for (int i = 0; i < listIndex; i++) {
-                    String item = i + 1 + ".[" + toDoList[i].getStatusIcon() + "] " + toDoList[i].getDescription();
+                    String item = (i + 1) + ".[" + toDoList[i].getStatusIcon() + "] " + toDoList[i].getDescription();
                     System.out.println(item);
                 }
             } else if (input.toLowerCase().contains("done")) {
