@@ -9,7 +9,6 @@ public class Duke {
         int listSize = 100;
         int listIndex = 0;
         Task[] toDoList = new Task[listSize];
-
         boolean isChatting = true;
 
         while (isChatting) {
@@ -18,18 +17,20 @@ public class Duke {
 
             System.out.print(line);
             if (input.equalsIgnoreCase("bye")) {
+                // Ends conversation
                 isChatting = false;
                 System.out.println("Bye. Talk to you later!");
             } else if (input.equalsIgnoreCase("list")) {
+                // Lists out all the tasks that are added with the command "list".
                 System.out.println("Here are the tasks in your to do list:");
                 for (int i = 0; i < listIndex; i++) {
                     String item = i + 1 + ".[" + toDoList[i].getStatusIcon() + "] " + toDoList[i].getDescription();
                     System.out.println(item);
                 }
             } else if (input.toLowerCase().contains("done")) {
+                // Marks task x as done where x is the index.
                 String[] words = input.split("\\s+");
                 int index = Integer.parseInt(words[1]);
-
                 if (index <= listIndex) {
                     toDoList[index - 1].markDone();
                     System.out.println("Good job on completing this task!\nI've marked this task as done:");
@@ -38,6 +39,7 @@ public class Duke {
                     System.out.println("There is no item on that index.");
                 }
             } else {
+                // Add whatever the user types into the list.
                 if (listIndex < listSize) {
                     toDoList[listIndex] = new Task(input);
                     listIndex++;
@@ -48,6 +50,5 @@ public class Duke {
             }
             System.out.print(line);
         }
-
     }
 }
