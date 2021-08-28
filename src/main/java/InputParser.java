@@ -1,11 +1,7 @@
-import java.util.Scanner;
-
 public class InputParser {
-    private String[] words;
+    private final String[] words;
 
-    public InputParser() {
-        Scanner input = new Scanner(System.in);
-        String sentence = input.nextLine();
+    public InputParser(String sentence) {
         this.words = sentence.split(" ");
     }
 
@@ -26,12 +22,12 @@ public class InputParser {
      * @return the description of the task
      */
     public String getDescription() {
-        if (words.length <= 1)   {
+        if (words.length <= 1) {
             return "";
         }
         String description = words[1];
-        for (int i = 2; i < words.length; i++)  {
-            if (words[i].startsWith("/"))   {
+        for (int i = 2; i < words.length; i++) {
+            if (words[i].startsWith("/")) {
                 break;
             }
             description += " " + words[i];
@@ -46,20 +42,25 @@ public class InputParser {
      * @return the date of an event or deadline
      */
     public String getDate() {
+        int keywordIndex = getKeywordIndex();
+        if (keywordIndex == -1) {
+            return "";
+        }
+        String dateAsString = words[keywordIndex + 1];
+        for (int i = keywordIndex + 2; i < words.length; i++) {
+            dateAsString += " " + words[i];
+        }
+        return dateAsString;
+    }
+
+    private int getKeywordIndex() {
         int keywordIndex = -1;
-        for (int i = 0; i < words.length; i++)  {
-            if (words[i].startsWith("/by") || words[i].startsWith("/at"))   {
+        for (int i = 0; i < words.length; i++) {
+            if (words[i].startsWith("/by") || words[i].startsWith("/at")) {
                 keywordIndex = i;
                 break;
             }
         }
-        if (keywordIndex == -1)   {
-            return "";
-        }
-        String dateAsString = words[keywordIndex+1];
-        for (int i = keywordIndex+2; i < words.length; i++) {
-            dateAsString += " " + words[i];
-        }
-        return dateAsString;
+        return keywordIndex;
     }
 }

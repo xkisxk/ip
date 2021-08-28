@@ -1,21 +1,31 @@
+import java.util.Scanner;
+
 public class Duke {
-    static boolean isChatting = true;
-    static int listSize = 100;
-    static int listIndex = 0;
-    static Task[] taskList = new Task[listSize];
+    protected static boolean isChatting = true;
+    protected static int listSize = 100;
+    protected static int listIndex = 0;
+    protected static Task[] taskList = new Task[listSize];
+    protected static final String line = "______________________________________________\n";
 
     public static void main(String[] args) {
-        final String line = "______________________________________________\n";
+        printWelcomeMessage();
+        while (isChatting) {
+            Scanner input = new Scanner(System.in);
+            String sentence = input.nextLine();
+            InputParser parsedInput = new InputParser(sentence);
+            TaskManager taskManager = new TaskManager(parsedInput.getCommand(), parsedInput.getDescription(), parsedInput.getDate());
+            printResponseMessage(taskManager);
+        }
+    }
+
+    private static void printResponseMessage(TaskManager taskManager) {
+        System.out.print(line);
+        taskManager.handleCommand();
+        System.out.print(line);
+    }
+
+    private static void printWelcomeMessage() {
         System.out.println(line + "...... Oh, sorry! I didn't see you there.\nI'm Alex. How may I help you?");
         System.out.print(line);
-
-        while (isChatting) {
-            InputParser parsedInput = new InputParser();
-            TaskManager taskManager = new TaskManager(parsedInput.getCommand(), parsedInput.getDescription(), parsedInput.getDate());
-
-            System.out.print(line);
-            taskManager.handleCommand();
-            System.out.print(line);
-        }
     }
 }

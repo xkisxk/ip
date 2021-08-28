@@ -11,7 +11,6 @@ public class TaskManager extends Duke {
 
     /**
      * Handles commands from the input based on the command word, which is the first word from input.
-     *
      */
     public void handleCommand() {
         switch (command) {
@@ -20,9 +19,9 @@ public class TaskManager extends Duke {
             if (listIndex < listSize) {
                 taskList[listIndex] = new ToDo(description);
                 listIndex++;
-                System.out.println("Added: \"" + taskList[listIndex - 1] + "\" into the list");
+                printAddedMessage();
             } else {
-                System.out.println("There's too much stuff in the to do list, I can't remember them all.");
+                printFailedToAddMessage();
             }
             break;
         case "event":
@@ -30,9 +29,9 @@ public class TaskManager extends Duke {
             if (listIndex < listSize) {
                 taskList[listIndex] = new Event(description, date);
                 listIndex++;
-                System.out.println("Added: \"" + taskList[listIndex - 1] + "\" into the list");
+                printAddedMessage();
             } else {
-                System.out.println("There's too much stuff in the to do list, I can't remember them all.");
+                printFailedToAddMessage();
             }
             break;
         case "deadline":
@@ -40,9 +39,9 @@ public class TaskManager extends Duke {
             if (listIndex < listSize) {
                 taskList[listIndex] = new Deadline(description, date);
                 listIndex++;
-                System.out.println("Added: \"" + taskList[listIndex - 1] + "\" into the list");
+                printAddedMessage();
             } else {
-                System.out.println("There's too much stuff in the to do list, I can't remember them all.");
+                printFailedToAddMessage();
             }
             break;
         case "done":
@@ -72,6 +71,21 @@ public class TaskManager extends Duke {
         default:
             System.out.println("I don't understand what you mean");
         }
+    }
+
+    /**
+     * Prints this message when a task can't be added
+     */
+    private void printFailedToAddMessage() {
+        System.out.println("There's too much stuff in the to do list, I can't remember them all.");
+    }
+
+    /**
+     * Prints this message when a task has been successfully added.
+     */
+    private void printAddedMessage() {
+        System.out.println("Got it. I have added this task: \n   " + taskList[listIndex - 1]);
+        System.out.println("Now you have " + listIndex + " tasks in the list");
     }
 
 }

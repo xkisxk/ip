@@ -1,12 +1,15 @@
 public class Task {
-    private String description;
-    private boolean isDone;
+    protected String description;
+    protected boolean isDone;
 
     /**
      * Task is class that contains a description and status of the task.
      * The status is represented by a [X] for done and a [ ] for not done
      * and is displayed before the description.
-     * E.g. 1. [ ] buy book
+     * The task type is represented by a [T] for ToDo, [E] for event and
+     * [D] for deadline which is added in the respective subclasses
+     *
+     * E.g. 1. [T][ ] buy book
      *
      * @param description description or name of the task
      */
