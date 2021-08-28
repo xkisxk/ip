@@ -49,4 +49,14 @@ public class Task {
     public void markDone() {
         isDone = true;
     }
+
+    /**
+     * Formats the description of the task
+     * e.g [X] buy book
+     *
+     * @return formatted version of the description
+     */
+    public String toString() {
+        return "[" + this.getStatusIcon() + "] " + description;
+    }
 }

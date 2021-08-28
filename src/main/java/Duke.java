@@ -1,53 +1,20 @@
-import java.util.Scanner;
-
 public class Duke {
+    static boolean isChatting = true;
+    static int listSize = 100;
+    static int listIndex = 0;
+    static Task[] taskList = new Task[listSize];
+
     public static void main(String[] args) {
-        String line = "______________________________________________\n";
+        final String line = "______________________________________________\n";
         System.out.println(line + "...... Oh, sorry! I didn't see you there.\nI'm Alex. How may I help you?");
         System.out.print(line);
 
-        int listSize = 100;
-        int listIndex = 0;
-        Task[] toDoList = new Task[listSize];
-        boolean isChatting = true;
-
         while (isChatting) {
-            Scanner in = new Scanner(System.in);
-            String input = in.nextLine();
+            InputParser parsedInput = new InputParser();
+            TaskManager taskManager = new TaskManager(parsedInput.getCommand(), parsedInput.getDescription(), parsedInput.getDate());
 
             System.out.print(line);
-            if (input.equalsIgnoreCase("bye")) {
-                // Ends conversation
-                isChatting = false;
-                System.out.println("Bye. Talk to you later!");
-            } else if (input.equalsIgnoreCase("list")) {
-                // Lists out all the tasks that are added with the command "list".
-                System.out.println("Here are the tasks in your to do list:");
-                for (int i = 0; i < listIndex; i++) {
-                    String item = (i + 1) + ".[" + toDoList[i].getStatusIcon() + "] " + toDoList[i].getDescription();
-                    System.out.println(item);
-                }
-            } else if (input.toLowerCase().contains("done")) {
-                // Marks task x as done where x is the index.
-                String[] words = input.split("\\s+");
-                int index = Integer.parseInt(words[1]);
-                if (index <= listIndex) {
-                    toDoList[index - 1].markDone();
-                    System.out.println("Good job on completing this task!\nI've marked this task as done:");
-                    System.out.println("[X] " + toDoList[index - 1].getDescription());
-                } else {
-                    System.out.println("There is no item on that index.");
-                }
-            } else {
-                // Add whatever the user types into the list.
-                if (listIndex < listSize) {
-                    toDoList[listIndex] = new Task(input);
-                    listIndex++;
-                    System.out.println("Added: \"" + input + "\" into the list");
-                } else {
-                    System.out.println("There's too much stuff in the to do list, I can't remember them all.");
-                }
-            }
+            taskManager.handleCommand();
             System.out.print(line);
         }
     }
