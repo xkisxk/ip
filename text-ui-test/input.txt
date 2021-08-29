@@ -4,3 +4,4 @@ event birthday /at 28/8
 list
 done 2
 list
+bye

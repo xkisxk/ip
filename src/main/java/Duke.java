@@ -9,8 +9,8 @@ public class Duke {
 
     public static void main(String[] args) {
         printWelcomeMessage();
+        Scanner input = new Scanner(System.in);
         while (isChatting) {
-            Scanner input = new Scanner(System.in);
             String sentence = input.nextLine();
             InputParser parsedInput = new InputParser(sentence);
             TaskManager taskManager = new TaskManager(parsedInput.getCommand(), parsedInput.getDescription(), parsedInput.getDate());
