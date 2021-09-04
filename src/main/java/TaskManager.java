@@ -122,14 +122,14 @@ public class TaskManager extends Duke {
      * Prints this message when a task can't be added
      */
     private void printFailedToAddMessage() {
-        System.out.println("There's too much stuff in the task list.\n I can't remember them all.");
+        System.out.println("There's too much stuff in the task list.\nI can't remember them all.");
     }
 
     /**
      * Prints this message when a task has been successfully added.
      */
     private void printAddedMessage() {
-        System.out.println("Got it. I have added this task: \n   " + taskList[listIndex - 1]);
+        System.out.println("Got it. I have added this task:\n   " + taskList[listIndex - 1]);
         System.out.println("Now you have " + listIndex + " tasks in the list");
     }
 
