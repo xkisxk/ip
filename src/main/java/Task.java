@@ -1,4 +1,5 @@
 public class Task {
+    protected final String NO_INPUT = "";
     protected String description;
     protected boolean isDone;
 
@@ -8,7 +9,7 @@ public class Task {
      * and is displayed before the description.
      * The task type is represented by a [T] for ToDo, [E] for event and
      * [D] for deadline which is added in the respective subclasses
-     *
+     * <p>
      * E.g. 1. [T][ ] buy book
      *
      * @param description description or name of the task
