@@ -1,3 +1,10 @@
+package duke.command;
+
+import duke.Duke;
+import duke.task.Deadline;
+import duke.task.Event;
+import duke.task.ToDo;
+
 public class TaskManager extends Duke {
     protected String command;
     protected String description;
