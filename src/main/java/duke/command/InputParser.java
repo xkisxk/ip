@@ -1,3 +1,5 @@
+package duke.command;
+
 public class InputParser {
     private final String NO_INPUT = "";
     private final String[] words;

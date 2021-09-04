@@ -1,3 +1,10 @@
+package duke;
+
+import duke.command.DukeException;
+import duke.command.InputParser;
+import duke.command.TaskManager;
+import duke.task.Task;
+
 import java.util.Scanner;
 
 public class Duke {

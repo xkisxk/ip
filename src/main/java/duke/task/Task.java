@@ -1,3 +1,5 @@
+package duke.task;
+
 public class Task {
     protected final String NO_INPUT = "";
     protected String description;
