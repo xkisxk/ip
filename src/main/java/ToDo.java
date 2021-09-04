@@ -1,6 +1,9 @@
 public class ToDo extends Task {
-    public ToDo(String description) {
+    public ToDo(String description) throws DukeException {
         super(description);
+        if (description.equals(NO_INPUT)) {
+            throw new DukeException("I can't add a todo that has no description");
+        }
     }
 
     @Override

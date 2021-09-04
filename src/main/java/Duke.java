@@ -2,10 +2,10 @@ import java.util.Scanner;
 
 public class Duke {
     protected static boolean isChatting = true;
-    protected static int listSize = 100;
+    protected static final int LIST_SIZE = 100;
     protected static int listIndex = 0;
-    protected static Task[] taskList = new Task[listSize];
-    protected static final String line = "______________________________________________\n";
+    protected static Task[] taskList = new Task[LIST_SIZE];
+    protected static final String LINE = "______________________________________________\n";
 
     public static void main(String[] args) {
         printWelcomeMessage();
@@ -19,13 +19,17 @@ public class Duke {
     }
 
     private static void printResponseMessage(TaskManager taskManager) {
-        System.out.print(line);
-        taskManager.handleCommand();
-        System.out.print(line);
+        System.out.print(LINE);
+        try {
+            taskManager.handleCommand();
+        } catch (DukeException e) {
+            System.out.println(e.toString());
+        }
+        System.out.print(LINE);
     }
 
     private static void printWelcomeMessage() {
-        System.out.println(line + "...... Oh, sorry! I didn't see you there.\nI'm Alex. How may I help you?");
-        System.out.print(line);
+        System.out.println(LINE + "...... Oh, sorry! I didn't see you there.\nI'm Alex. How may I help you?");
+        System.out.print(LINE);
     }
 }
