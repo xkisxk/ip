@@ -61,7 +61,7 @@ public class InputParser {
         for (int i = keywordIndex + 1; i < words.length; i++) {
             dateAsString += words[i] + " ";
         }
-        if (dateAsString.length() > 0)  {
+        if (dateAsString.length() > 0) {
             dateAsString = dateAsString.substring(0, dateAsString.length() - 1);
         }
         return dateAsString;

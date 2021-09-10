@@ -47,6 +47,10 @@ public class TaskManager extends Duke {
             isChatting = false;
             System.out.println("Bye. Talk to you later!");
             break;
+        case "delete":
+            // Delete a task
+            handleDelete();
+            break;
         default:
             throw new DukeException("Sorry I don't understand what you mean by \"" + command + "\"");
         }
@@ -65,6 +69,21 @@ public class TaskManager extends Duke {
         }
     }
 
+    private void handleDelete() {
+        try {
+            int index = Integer.parseInt(description);
+            String task = taskList.get(index - 1).toString();
+            taskList.remove(index - 1);
+            System.out.println("Avoiding doing this task?! Just kidding.\nI've deleted this task:   ");
+            System.out.println(task);
+            System.out.println("Now you have " + taskList.size() + " items.");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("There is no item at that index. You have " + taskList.size() + " items.");
+        } catch (NumberFormatException e) {
+            System.out.println("\"" + description + "\" is not a number...");
+        }
+    }
+
     /**
      * Marks a task as done, so the task will be tagged with a [X]
      */
@@ -72,10 +91,10 @@ public class TaskManager extends Duke {
         try {
             int index = Integer.parseInt(description);
             taskList.get(index - 1).markDone();
-            System.out.println("Good job on completing this task!\nI've marked this task as done:");
+            System.out.println("Good job on completing this task!\nI've marked this task as done:   ");
             System.out.println(taskList.get(index - 1).toString());
         } catch (NullPointerException e) {
-            System.out.println("There is no item at that index. You have " + listIndex + " items");
+            System.out.println("There is no item at that index. You have " + taskList.size() + " items.");
         } catch (NumberFormatException e) {
             System.out.println("\"" + description + "\" is not a number...");
         }
@@ -89,7 +108,6 @@ public class TaskManager extends Duke {
     private void handleDeadline() throws DukeException {
         try {
             taskList.add(new Deadline(description, date));
-            listIndex++;
             printAddedMessage();
         } catch (ArrayIndexOutOfBoundsException e) {
             printFailedToAddMessage();
@@ -104,7 +122,6 @@ public class TaskManager extends Duke {
     private void handleEvent() throws DukeException {
         try {
             taskList.add(new Event(description, date));
-            listIndex++;
             printAddedMessage();
         } catch (ArrayIndexOutOfBoundsException e) {
             printFailedToAddMessage();
@@ -119,7 +136,6 @@ public class TaskManager extends Duke {
     private void handleToDo() throws DukeException {
         try {
             taskList.add(new ToDo(description));
-            listIndex++;
             printAddedMessage();
         } catch (ArrayIndexOutOfBoundsException e) {
             printFailedToAddMessage();
@@ -137,8 +153,8 @@ public class TaskManager extends Duke {
      * Prints this message when a task has been successfully added.
      */
     private void printAddedMessage() {
-        System.out.println("Got it. I have added this task:\n   " + taskList.get(listIndex - 1));
-        System.out.println("Now you have " + listIndex + " tasks in the list");
+        System.out.println("Got it. I have added this task:\n   " + taskList.get(taskList.size() - 1));
+        System.out.println("Now you have " + taskList.size() + " tasks in the list.");
     }
 
 }

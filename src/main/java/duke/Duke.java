@@ -8,10 +8,9 @@ import duke.task.Task;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class    Duke {
+public class Duke {
     protected static boolean isChatting = true;
-    protected static int listIndex = 0;
-    protected static ArrayList<Task> taskList = new ArrayList<Task>();
+    protected static ArrayList<Task> taskList = new ArrayList<>();
     protected static final String LINE = "______________________________________________\n";
 
     public static void main(String[] args) {

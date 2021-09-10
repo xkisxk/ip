@@ -1,7 +1,13 @@
 todo buy bread
+todo
+deadline homework
 deadline homework /by 28/8
+event birthday
 event birthday /at 28/8
+deadline homework2 /by 29/8
 list
 done 2
+delete
+delete 1
 list
 bye
