@@ -7,6 +7,10 @@ public class DukeException extends Exception {
         this.errorMessage = errorMessage;
     }
 
+    public DukeException() {
+        this.errorMessage = "An error occurred";
+    }
+
     @Override
     public String toString() {
         return errorMessage;
