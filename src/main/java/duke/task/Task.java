@@ -21,6 +21,29 @@ public class Task {
         this.isDone = false;
     }
 
+    public Task(String description, boolean isDone) {
+        this.description = description;
+        this.isDone = isDone;
+    }
+
+    /**
+     * Gets the date of the task if it has one
+     *
+     * @return date
+     */
+    public String getDate() {
+        return NO_INPUT;
+    }
+
+    /**
+     * Gets the tag of the task, e.g. T for ToDo
+     *
+     * @return task tag
+     */
+    public String getTaskTag() {
+        return NO_INPUT;
+    }
+
     /**
      * Returns "X" or " " depending on whether the task is completed.
      * "X" for completed, " " for not completed
@@ -29,6 +52,16 @@ public class Task {
      */
     public String getStatusIcon() {
         return (isDone ? "X" : " ");
+    }
+
+    /**
+     * Returns 1 or 0 depending on whether the task is completed.
+     * 1 for completed, 0 for not completed
+     *
+     * @return an integer representing the status
+     */
+    public int getDoneTag() {
+        return isDone ? 1 : 0;
     }
 
     /**
