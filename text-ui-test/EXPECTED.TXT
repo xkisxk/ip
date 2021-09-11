@@ -5,23 +5,40 @@ ______________________________________________
 ______________________________________________
 Got it. I have added this task:
    [T][ ] buy bread
-Now you have 1 tasks in the list
+Now you have 1 tasks in the list.
+______________________________________________
+______________________________________________
+I can't add a todo that has no description
+______________________________________________
+______________________________________________
+I need a date for this deadline.
+Use /by to tell me the date.
 ______________________________________________
 ______________________________________________
 Got it. I have added this task:
    [D][ ] homework (by: 28/8)
-Now you have 2 tasks in the list
+Now you have 2 tasks in the list.
+______________________________________________
+______________________________________________
+I need a date for this event.
+Use /at to tell me the date.
 ______________________________________________
 ______________________________________________
 Got it. I have added this task:
    [E][ ] birthday (at: 28/8)
-Now you have 3 tasks in the list
+Now you have 3 tasks in the list.
+______________________________________________
+______________________________________________
+Got it. I have added this task:
+   [D][ ] homework2 (by: 29/8)
+Now you have 4 tasks in the list.
 ______________________________________________
 ______________________________________________
 Here are the tasks in your to do list:
 1.[T][ ] buy bread
 2.[D][ ] homework (by: 28/8)
 3.[E][ ] birthday (at: 28/8)
+4.[D][ ] homework2 (by: 29/8)
 ______________________________________________
 ______________________________________________
 Good job on completing this task!
@@ -29,10 +46,19 @@ I've marked this task as done:
 [D][X] homework (by: 28/8)
 ______________________________________________
 ______________________________________________
+"" is not a number...
+______________________________________________
+______________________________________________
+Avoiding doing this task?! Just kidding.
+I've deleted this task:
+[T][ ] buy bread
+Now you have 3 items.
+______________________________________________
+______________________________________________
 Here are the tasks in your to do list:
-1.[T][ ] buy bread
-2.[D][X] homework (by: 28/8)
-3.[E][ ] birthday (at: 28/8)
+1.[D][X] homework (by: 28/8)
+2.[E][ ] birthday (at: 28/8)
+3.[D][ ] homework2 (by: 29/8)
 ______________________________________________
 ______________________________________________
 Bye. Talk to you later!

@@ -5,13 +5,12 @@ import duke.command.InputParser;
 import duke.command.TaskManager;
 import duke.task.Task;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Duke {
     protected static boolean isChatting = true;
-    protected static final int LIST_SIZE = 100;
-    protected static int listIndex = 0;
-    protected static Task[] taskList = new Task[LIST_SIZE];
+    protected static ArrayList<Task> taskList = new ArrayList<>();
     protected static final String LINE = "______________________________________________\n";
 
     public static void main(String[] args) {
@@ -30,7 +29,7 @@ public class Duke {
         try {
             taskManager.handleCommand();
         } catch (DukeException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
         System.out.print(LINE);
     }

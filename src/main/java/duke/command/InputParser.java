@@ -20,7 +20,7 @@ public class InputParser {
      * @return the command for the input
      */
     public String getCommand() {
-        if (words.length == 0)   {
+        if (words.length == 0) {
             return NO_INPUT;
         }
         return words[0].toLowerCase();
@@ -57,9 +57,12 @@ public class InputParser {
         if (keywordIndex == -1) {
             return NO_INPUT;
         }
-        String dateAsString = words[keywordIndex + 1];
-        for (int i = keywordIndex + 2; i < words.length; i++) {
-            dateAsString += " " + words[i];
+        String dateAsString = NO_INPUT;
+        for (int i = keywordIndex + 1; i < words.length; i++) {
+            dateAsString += words[i] + " ";
+        }
+        if (dateAsString.length() > 0) {
+            dateAsString = dateAsString.substring(0, dateAsString.length() - 1);
         }
         return dateAsString;
     }
