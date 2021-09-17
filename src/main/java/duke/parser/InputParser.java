@@ -1,6 +1,4 @@
-package duke.command;
-
-import duke.Duke;
+package duke.parser;
 
 public class InputParser {
     private final String NO_INPUT = "";

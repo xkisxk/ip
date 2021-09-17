@@ -1,4 +1,4 @@
-package duke.command;
+package duke.parser;
 
 public class FileParser {
     protected final String[] words;

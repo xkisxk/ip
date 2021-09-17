@@ -1,8 +1,8 @@
 package duke.command;
 
 import duke.Duke;
-import duke.Storage;
-import duke.Ui;
+import duke.data.Storage;
+import duke.ui.Ui;
 import duke.task.Deadline;
 import duke.task.Event;
 import duke.task.Task;
