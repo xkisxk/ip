@@ -1,5 +1,7 @@
 package duke.command;
 
+import duke.Duke;
+
 public class InputParser {
     private final String NO_INPUT = "";
     private final String[] words;
@@ -36,14 +38,15 @@ public class InputParser {
         if (words.length <= 1) {
             return NO_INPUT;
         }
-        String description = words[1];
-        for (int i = 2; i < words.length; i++) {
+        String description = NO_INPUT;
+        for (int i = 1; i < words.length; i++) {
             if (words[i].startsWith("/")) {
                 break;
             }
-            description += " " + words[i];
+            description += words[i] + " ";
         }
-        return description;
+
+        return description.trim();
     }
 
     /**

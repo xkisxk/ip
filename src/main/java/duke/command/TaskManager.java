@@ -1,12 +1,13 @@
 package duke.command;
 
 import duke.Duke;
+import duke.Storage;
+import duke.Ui;
 import duke.task.Deadline;
 import duke.task.Event;
 import duke.task.Task;
 import duke.task.ToDo;
 
-import java.io.FileWriter;
 import java.io.IOException;
 
 public class TaskManager extends Duke {
@@ -62,6 +63,48 @@ public class TaskManager extends Duke {
     }
 
     /**
+     * Converts ToDo from the saved file to a ToDo task
+     */
+    private void convertToDo() {
+        Ui ui = new Ui();
+        try {
+            taskList.add(new ToDo(description, isDone));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            ui.printFailedToAddMessage();
+        } catch (DukeException e) {
+            ui.printError(e.toString());
+        }
+    }
+
+    /**
+     * Converts event from the saved file to an event task
+     */
+    private void convertEvent() {
+        Ui ui = new Ui();
+        try {
+            taskList.add(new Event(description, isDone, date));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            ui.printFailedToAddMessage();
+        } catch (DukeException e) {
+            ui.printError(e.toString());
+        }
+    }
+
+    /**
+     * Converts deadline from the saved file to a deadline task
+     */
+    private void convertDeadline() {
+        Ui ui = new Ui();
+        try {
+            taskList.add(new Deadline(description, isDone, date));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            ui.printFailedToAddMessage();
+        } catch (DukeException e) {
+            ui.printError(e.toString());
+        }
+    }
+
+    /**
      * Handles commands from the input from command line based on the command word, which is the first word from input.
      *
      * @throws DukeException if command is not defined under cases
@@ -72,17 +115,17 @@ public class TaskManager extends Duke {
         case "todo":
             // Labels task as T
             handleToDo();
-            autoSave();
+            autoSaveFile();
             break;
         case "event":
             // Labels task as E and also takes in a date
             handleEvent();
-            autoSave();
+            autoSaveFile();
             break;
         case "deadline":
             // Labels task as D and also takes in a date
             handleDeadline();
-            autoSave();
+            autoSaveFile();
             break;
         case "done":
             // Marks task x as done where x is the index.
@@ -111,101 +154,6 @@ public class TaskManager extends Duke {
             System.out.println("Saved to saved.txt in ./data");
         default:
             throw new DukeException("Sorry I don't understand what you mean by \"" + command + "\"");
-        }
-    }
-
-    /**
-     * Converts ToDo from the saved file to a ToDo task
-     */
-    private void convertToDo() {
-        try {
-            taskList.add(new ToDo(description, isDone));
-        } catch (ArrayIndexOutOfBoundsException e) {
-            printFailedToAddMessage();
-        } catch (DukeException e) {
-            System.out.println(e);
-        }
-    }
-
-    /**
-     * Converts event from the saved file to an event task
-     */
-    private void convertEvent() {
-        try {
-            taskList.add(new Event(description, isDone, date));
-        } catch (ArrayIndexOutOfBoundsException e) {
-            printFailedToAddMessage();
-        } catch (DukeException e) {
-            System.out.println(e);
-        }
-    }
-
-    /**
-     * Converts deadline from the saved file to a deadline task
-     */
-    private void convertDeadline() {
-        try {
-            taskList.add(new Deadline(description, isDone, date));
-        } catch (ArrayIndexOutOfBoundsException e) {
-            printFailedToAddMessage();
-        } catch (DukeException e) {
-            System.out.println(e);
-        }
-    }
-
-    private Boolean hasDate(String date) {
-        return !date.equals(NO_INPUT);
-    }
-
-    /**
-     * Saves everything in the list into a save file, rewriting what the save file had previously.
-     *
-     * @throws IOException if file does not exist
-     */
-    public void saveFile() throws IOException {
-        FileWriter writer = new FileWriter(FILE_PATH + FILE_NAME, false);
-        for (Task task : taskList) {
-            // Rewrite list with all tasks currently in the list
-            String date = task.getDate();
-            String listItem = task.getTaskTag() + " | " + task.getDoneTag() + " | " + task.getDescription();
-            listItem = (hasDate(date)) ? listItem + " | " + date : listItem;
-            listItem += "\n";
-            writer.write(listItem);
-        }
-        writer.flush();
-        writer.close();
-    }
-
-    /**
-     * Appends a newly added task into the save file.
-     *
-     * @throws IOException if file does not exist
-     */
-    private void autoSave() throws IOException {
-        FileWriter writer = new FileWriter(FILE_PATH + FILE_NAME, true);
-        Task task = taskList.get(taskList.size() - 1);
-
-        // Get the list item
-        String date = task.getDate();
-        String listItem = task.getTaskTag() + " | " + task.getDoneTag() + " | " + task.getDescription();
-        listItem = (hasDate(date)) ? listItem + " | " + date : listItem;
-        listItem += "\n";
-
-        // Append it
-        writer.write(listItem);
-        writer.flush();
-        writer.close();
-    }
-
-    /**
-     * Prints out the entire task list as a numbered list.
-     */
-    public void printTaskList() {
-        int index = 1;
-        for (Task task : taskList) {
-            String item = index + "." + task.toString();
-            System.out.println(item);
-            index++;
         }
     }
 
@@ -247,13 +195,14 @@ public class TaskManager extends Duke {
      * Adds a deadline task into the task list
      */
     private void handleDeadline() {
+        Ui ui = new Ui();
         try {
             taskList.add(new Deadline(description, date));
-            printAddedMessage();
+            ui.printAddedMessage(taskList);
         } catch (ArrayIndexOutOfBoundsException e) {
-            printFailedToAddMessage();
+            ui.printFailedToAddMessage();
         } catch (DukeException e) {
-            System.out.println(e);
+            ui.printError(e.toString());
         }
     }
 
@@ -261,13 +210,14 @@ public class TaskManager extends Duke {
      * Adds an event task into the task list
      */
     private void handleEvent() {
+        Ui ui = new Ui();
         try {
             taskList.add(new Event(description, date));
-            printAddedMessage();
+            ui.printAddedMessage(taskList);
         } catch (ArrayIndexOutOfBoundsException e) {
-            printFailedToAddMessage();
+            ui.printFailedToAddMessage();
         } catch (DukeException e) {
-            System.out.println(e);
+            ui.printError(e.toString());
         }
     }
 
@@ -275,29 +225,47 @@ public class TaskManager extends Duke {
      * Adds a ToDo task into the task list
      */
     private void handleToDo() {
+        Ui ui = new Ui();
         try {
             taskList.add(new ToDo(description));
-            printAddedMessage();
+            ui.printAddedMessage(taskList);
         } catch (ArrayIndexOutOfBoundsException e) {
-            printFailedToAddMessage();
+            ui.printFailedToAddMessage();
         } catch (DukeException e) {
-            System.out.println(e);
+            ui.printError(e.toString());
         }
     }
 
     /**
-     * Prints this message when a task can't be added
+     * Saves everything in the list into a save file, rewriting what the save file had previously.
+     *
+     * @throws IOException if file does not exist
      */
-    private void printFailedToAddMessage() {
-        System.out.println("There's too much stuff in the task list.\nI can't remember them all.");
+    public void saveFile() throws IOException {
+        Storage storage = new Storage();
+        storage.save(PATH + FILE, taskList);
     }
 
     /**
-     * Prints this message when a task has been successfully added.
+     * Appends a newly added task into the save file.
+     *
+     * @throws IOException if file does not exist
      */
-    private void printAddedMessage() {
-        System.out.println("Got it. I have added this task:\n   " + taskList.get(taskList.size() - 1));
-        System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+    private void autoSaveFile() throws IOException {
+        Storage storage = new Storage();
+        storage.autoSave(PATH + FILE, taskList);
+    }
+
+    /**
+     * Prints out the entire task list as a numbered list.
+     */
+    public void printTaskList() {
+        int index = 1;
+        for (Task task : taskList) {
+            String item = index + "." + task.toString();
+            System.out.println(item);
+            index++;
+        }
     }
 
 }
