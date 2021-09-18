@@ -1,9 +1,10 @@
 package duke;
 
-import duke.command.DukeException;
+import duke.exception.DukeException;
 import duke.data.Storage;
 import duke.parser.InputParser;
 import duke.command.TaskManager;
+import duke.task.TaskList;
 import duke.ui.Ui;
 
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class Duke {
         this.ui = new Ui();
         this.storage = new Storage(filePath);
         try {
-            this.taskList = new TaskList(storage.load(PATH, filePath));
+            this.taskList = new TaskList(storage.load(PATH));
         } catch (IOException e) {
             ui.printError(e.getMessage());
         } catch (DukeException e) {
@@ -37,8 +38,12 @@ public class Duke {
 
     private void run() {
         ui.printLine();
-        ui.printWelcomeMessage();
-        new TaskManager(taskList).printTaskList();
+        if (storage.isEmpty()) {
+            ui.printWelcomeMessage();
+        } else {
+            ui.printWelcomeBackMessage();
+        }
+        ui.printTaskList(taskList);
         ui.printLine();
 
         while (isChatting) {

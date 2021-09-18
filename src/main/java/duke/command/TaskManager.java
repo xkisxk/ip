@@ -1,18 +1,15 @@
 package duke.command;
 
-import duke.TaskList;
+import duke.exception.DukeException;
+import duke.task.*;
 import duke.data.Storage;
 import duke.parser.Parser;
 import duke.ui.Ui;
-import duke.task.Deadline;
-import duke.task.Event;
-import duke.task.ToDo;
 
 import java.io.IOException;
 
 import static duke.Duke.PATH;
 import static duke.Duke.FILE;
-import static duke.Duke.NO_INPUT;
 
 public class TaskManager {
     protected TaskList taskList;
@@ -26,28 +23,9 @@ public class TaskManager {
      * TaskManager handles all the commands from input that comes from both CLI and save file.
      * If the command exists, task manager will execute it, else it will raise an error.
      *
-     * @param command command term
-     * @param description description of task
-     * @param date date of task
-     * @param isDone the status of task
+     * @param parser the input parser
+     * @param taskList list of tasks
      */
-    public TaskManager(String command, String description, String date, boolean isDone) {
-        this.command = command;
-        this.description = description;
-        this.date = date;
-        this.isDone = isDone;
-        this.ui = new Ui();
-    }
-
-    public TaskManager(TaskList taskList) {
-        this.command = NO_INPUT;
-        this.description = NO_INPUT;
-        this.date = NO_INPUT;
-        this.isDone = false;
-        this.taskList = taskList;
-        this.ui = new Ui();
-    }
-
     public TaskManager(Parser parser, TaskList taskList) {
         this.command = parser.getCommand();
         this.description = parser.getDescription();
@@ -144,11 +122,11 @@ public class TaskManager {
         case "list":
             // Lists out all the tasks that are added with the command "list".
             System.out.println("Here are the tasks in your to do list:");
-            printTaskList();
+            ui.printTaskList(taskList);
             break;
         case "bye":
             // Ends conversation
-            System.out.println("Bye. Talk to you later!");
+            ui.printGoodbyeMessage();
             saveFile();
             break;
         case "delete":
@@ -185,9 +163,9 @@ public class TaskManager {
     private void handleDone() {
         try {
             int index = Integer.parseInt(description);
-            taskList.getTask(index - 1).markDone();
-            System.out.println("Good job on completing this task!\nI've marked this task as done:   ");
-            System.out.println(taskList.getTask(index - 1).toString());
+            Task task = taskList.getTask(index - 1);
+            task.markDone();
+            ui.printDoneMessage(task);
         } catch (NullPointerException e) {
             System.out.println("There is no item at that index. You have " + taskList.size() + " items.");
         } catch (NumberFormatException e) {
@@ -202,9 +180,9 @@ public class TaskManager {
         try {
             taskList.addTask(new Deadline(description, date));
         } catch (ArrayIndexOutOfBoundsException e) {
-            printFailedToAddMessage();
+            ui.printFailedToAddMessage();
         } catch (DukeException e) {
-            System.out.println(e);
+            ui.printError(e.toString());
         }
     }
 
@@ -215,9 +193,9 @@ public class TaskManager {
         try {
             taskList.addTask(new Event(description, date));
         } catch (ArrayIndexOutOfBoundsException e) {
-            printFailedToAddMessage();
+            ui.printFailedToAddMessage();
         } catch (DukeException e) {
-            System.out.println(e);
+            ui.printError(e.toString());
         }
     }
 
@@ -228,9 +206,9 @@ public class TaskManager {
         try {
             taskList.addTask(new ToDo(description));
         } catch (ArrayIndexOutOfBoundsException e) {
-            printFailedToAddMessage();
+            ui.printFailedToAddMessage();
         } catch (DukeException e) {
-            System.out.println(e);
+            ui.printError(e.toString());
         }
     }
 
@@ -253,25 +231,4 @@ public class TaskManager {
         Storage storage = new Storage(PATH + FILE);
         storage.autoSave(taskList);
     }
-
-    /**
-     * Prints out the entire task list as a numbered list.
-     */
-    public void printTaskList() {
-        int index = 1;
-        for (int i = 0; i < taskList.size(); i++) {
-            String item = index + "." + taskList.getTask(i).toString();
-            System.out.println(item);
-            index++;
-        }
-    }
-
-    /**
-     * Prints this message when a task can't be added
-     */
-    public void printFailedToAddMessage() {
-        System.out.println("There's too much stuff in the task list.\nI can't remember them all.");
-    }
-
-
 }

@@ -1,8 +1,9 @@
 package duke.ui;
 
-import duke.command.DukeException;
+import duke.exception.DukeException;
 import duke.command.TaskManager;
 import duke.task.Task;
+import duke.task.TaskList;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +17,8 @@ public class Ui {
     protected final String WELCOME_BACK_MESSAGE = "Welcome back! How are you doing?\nHere are the tasks from last time:";
     protected final String GOODBYE_MESSAGE = "Bye. Talk to you later!";
     protected final String DELETE_MESSAGE = "Avoiding doing this task?! Just kidding.\nI've deleted this task:";
+    protected final String FAILED_TO_ADD_MESSAGE = "There's too much stuff in the task list.\nI can't remember them all.";
+    protected final String DONE_MESSAGE = "Good job on completing this task!\nI've marked this task as done:";
 
     private final Scanner in;
     private final PrintStream out;
@@ -53,7 +56,7 @@ public class Ui {
     }
 
     public void printWelcomeBackMessage() {
-        printMessage(LINE_SEPARATOR, WELCOME_BACK_MESSAGE, LINE_SEPARATOR);
+        printMessage(WELCOME_BACK_MESSAGE);
     }
 
     public void printLine() {
@@ -76,19 +79,32 @@ public class Ui {
      * Prints this message when a task can't be added
      */
     public void printFailedToAddMessage() {
-        System.out.println("There's too much stuff in the task list.\nI can't remember them all.");
+        printMessage(FAILED_TO_ADD_MESSAGE);
     }
 
     /**
      * Prints this message when a task has been successfully added.
      */
     public void printAddedMessage(ArrayList<Task> taskList) {
-        System.out.println("Got it. I have added this task:\n   " + taskList.get(taskList.size() - 1));
-        System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+        printMessage("Got it. I have added this task:\n   " + taskList.get(taskList.size() - 1),
+                "Now you have " + taskList.size() + " tasks in the list.");
     }
 
     public void printGoodbyeMessage() {
-        printMessage(LINE_SEPARATOR, GOODBYE_MESSAGE, LINE_SEPARATOR);
+        printMessage(GOODBYE_MESSAGE);
     }
 
+    public void printDoneMessage(Task task) {
+        printMessage(DONE_MESSAGE, task.toString());
+    }
+
+    /**
+     * Prints out the entire task list as a numbered list.
+     */
+    public void printTaskList(TaskList taskList) {
+        for (int i = 0; i < taskList.size(); i++) {
+            String item = i + 1 + "." + taskList.getTask(i).toString();
+            printMessage(item);
+        }
+    }
 }
