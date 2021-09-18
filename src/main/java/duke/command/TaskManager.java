@@ -1,20 +1,26 @@
 package duke.command;
 
-import duke.Duke;
+import duke.TaskList;
 import duke.data.Storage;
+import duke.parser.Parser;
 import duke.ui.Ui;
 import duke.task.Deadline;
 import duke.task.Event;
-import duke.task.Task;
 import duke.task.ToDo;
 
 import java.io.IOException;
 
-public class TaskManager extends Duke {
+import static duke.Duke.PATH;
+import static duke.Duke.FILE;
+import static duke.Duke.NO_INPUT;
+
+public class TaskManager {
+    protected TaskList taskList;
     protected String command;
     protected String description;
     protected String date;
     protected boolean isDone;
+    private Ui ui;
 
     /**
      * TaskManager handles all the commands from input that comes from both CLI and save file.
@@ -23,26 +29,32 @@ public class TaskManager extends Duke {
      * @param command command term
      * @param description description of task
      * @param date date of task
+     * @param isDone the status of task
      */
-    public TaskManager(String command, String description, String date) {
-        this.command = command;
-        this.description = description;
-        this.date = date;
-        this.isDone = false;
-    }
-
     public TaskManager(String command, String description, String date, boolean isDone) {
         this.command = command;
         this.description = description;
         this.date = date;
         this.isDone = isDone;
+        this.ui = new Ui();
     }
 
-    public TaskManager() {
+    public TaskManager(TaskList taskList) {
         this.command = NO_INPUT;
         this.description = NO_INPUT;
         this.date = NO_INPUT;
         this.isDone = false;
+        this.taskList = taskList;
+        this.ui = new Ui();
+    }
+
+    public TaskManager(Parser parser, TaskList taskList) {
+        this.command = parser.getCommand();
+        this.description = parser.getDescription();
+        this.date = parser.getDate();
+        this.isDone = parser.getDone();
+        this.taskList = taskList;
+        this.ui = new Ui();
     }
 
     /**
@@ -66,9 +78,8 @@ public class TaskManager extends Duke {
      * Converts ToDo from the saved file to a ToDo task
      */
     private void convertToDo() {
-        Ui ui = new Ui();
         try {
-            taskList.add(new ToDo(description, isDone));
+            taskList.convertTask(new ToDo(description, isDone));
         } catch (ArrayIndexOutOfBoundsException e) {
             ui.printFailedToAddMessage();
         } catch (DukeException e) {
@@ -80,9 +91,8 @@ public class TaskManager extends Duke {
      * Converts event from the saved file to an event task
      */
     private void convertEvent() {
-        Ui ui = new Ui();
         try {
-            taskList.add(new Event(description, isDone, date));
+            taskList.convertTask(new Event(description, isDone, date));
         } catch (ArrayIndexOutOfBoundsException e) {
             ui.printFailedToAddMessage();
         } catch (DukeException e) {
@@ -94,9 +104,8 @@ public class TaskManager extends Duke {
      * Converts deadline from the saved file to a deadline task
      */
     private void convertDeadline() {
-        Ui ui = new Ui();
         try {
-            taskList.add(new Deadline(description, isDone, date));
+            taskList.convertTask(new Deadline(description, isDone, date));
         } catch (ArrayIndexOutOfBoundsException e) {
             ui.printFailedToAddMessage();
         } catch (DukeException e) {
@@ -139,7 +148,6 @@ public class TaskManager extends Duke {
             break;
         case "bye":
             // Ends conversation
-            isChatting = false;
             System.out.println("Bye. Talk to you later!");
             saveFile();
             break;
@@ -162,12 +170,8 @@ public class TaskManager extends Duke {
      */
     private void handleDelete() {
         try {
-            int index = Integer.parseInt(description);
-            String task = taskList.get(index - 1).toString();
-            taskList.remove(index - 1);
-            System.out.println("Avoiding doing this task?! Just kidding.\nI've deleted this task:   ");
-            System.out.println(task);
-            System.out.println("Now you have " + taskList.size() + " items.");
+            int index = Integer.parseInt(description) - 1;
+            taskList.deleteTask(index);
         } catch (IndexOutOfBoundsException e) {
             System.out.println("There is no item at that index. You have " + taskList.size() + " items.");
         } catch (NumberFormatException e) {
@@ -181,9 +185,9 @@ public class TaskManager extends Duke {
     private void handleDone() {
         try {
             int index = Integer.parseInt(description);
-            taskList.get(index - 1).markDone();
+            taskList.getTask(index - 1).markDone();
             System.out.println("Good job on completing this task!\nI've marked this task as done:   ");
-            System.out.println(taskList.get(index - 1).toString());
+            System.out.println(taskList.getTask(index - 1).toString());
         } catch (NullPointerException e) {
             System.out.println("There is no item at that index. You have " + taskList.size() + " items.");
         } catch (NumberFormatException e) {
@@ -195,14 +199,12 @@ public class TaskManager extends Duke {
      * Adds a deadline task into the task list
      */
     private void handleDeadline() {
-        Ui ui = new Ui();
         try {
-            taskList.add(new Deadline(description, date));
-            ui.printAddedMessage(taskList);
+            taskList.addTask(new Deadline(description, date));
         } catch (ArrayIndexOutOfBoundsException e) {
-            ui.printFailedToAddMessage();
+            printFailedToAddMessage();
         } catch (DukeException e) {
-            ui.printError(e.toString());
+            System.out.println(e);
         }
     }
 
@@ -210,14 +212,12 @@ public class TaskManager extends Duke {
      * Adds an event task into the task list
      */
     private void handleEvent() {
-        Ui ui = new Ui();
         try {
-            taskList.add(new Event(description, date));
-            ui.printAddedMessage(taskList);
+            taskList.addTask(new Event(description, date));
         } catch (ArrayIndexOutOfBoundsException e) {
-            ui.printFailedToAddMessage();
+            printFailedToAddMessage();
         } catch (DukeException e) {
-            ui.printError(e.toString());
+            System.out.println(e);
         }
     }
 
@@ -225,14 +225,12 @@ public class TaskManager extends Duke {
      * Adds a ToDo task into the task list
      */
     private void handleToDo() {
-        Ui ui = new Ui();
         try {
-            taskList.add(new ToDo(description));
-            ui.printAddedMessage(taskList);
+            taskList.addTask(new ToDo(description));
         } catch (ArrayIndexOutOfBoundsException e) {
-            ui.printFailedToAddMessage();
+            printFailedToAddMessage();
         } catch (DukeException e) {
-            ui.printError(e.toString());
+            System.out.println(e);
         }
     }
 
@@ -242,8 +240,8 @@ public class TaskManager extends Duke {
      * @throws IOException if file does not exist
      */
     public void saveFile() throws IOException {
-        Storage storage = new Storage();
-        storage.save(PATH + FILE, taskList);
+        Storage storage = new Storage(PATH + FILE);
+        storage.save(taskList);
     }
 
     /**
@@ -252,8 +250,8 @@ public class TaskManager extends Duke {
      * @throws IOException if file does not exist
      */
     private void autoSaveFile() throws IOException {
-        Storage storage = new Storage();
-        storage.autoSave(PATH + FILE, taskList);
+        Storage storage = new Storage(PATH + FILE);
+        storage.autoSave(taskList);
     }
 
     /**
@@ -261,11 +259,19 @@ public class TaskManager extends Duke {
      */
     public void printTaskList() {
         int index = 1;
-        for (Task task : taskList) {
-            String item = index + "." + task.toString();
+        for (int i = 0; i < taskList.size(); i++) {
+            String item = index + "." + taskList.getTask(i).toString();
             System.out.println(item);
             index++;
         }
     }
+
+    /**
+     * Prints this message when a task can't be added
+     */
+    public void printFailedToAddMessage() {
+        System.out.println("There's too much stuff in the task list.\nI can't remember them all.");
+    }
+
 
 }

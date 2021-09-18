@@ -1,6 +1,6 @@
 package duke.parser;
 
-public class InputParser {
+public class InputParser extends Parser {
     private final String NO_INPUT = "";
     private final String[] words;
 
@@ -45,6 +45,10 @@ public class InputParser {
         }
 
         return description.trim();
+    }
+
+    public boolean getDone() {
+        return false;
     }
 
     /**

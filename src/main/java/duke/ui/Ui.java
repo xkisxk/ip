@@ -15,6 +15,7 @@ public class Ui {
     protected final String WELCOME_MESSAGE = "...... Oh, sorry! I didn't see you there.\nI'm Alex. How may I help you?";
     protected final String WELCOME_BACK_MESSAGE = "Welcome back! How are you doing?\nHere are the tasks from last time:";
     protected final String GOODBYE_MESSAGE = "Bye. Talk to you later!";
+    protected final String DELETE_MESSAGE = "Avoiding doing this task?! Just kidding.\nI've deleted this task:";
 
     private final Scanner in;
     private final PrintStream out;
@@ -44,7 +45,7 @@ public class Ui {
     }
 
     public void printError(String message) {
-        printMessage(LINE_SEPARATOR, message, LINE_SEPARATOR);
+        printMessage(message);
     }
 
     public void printWelcomeMessage() {
@@ -66,7 +67,7 @@ public class Ui {
         } catch (DukeException e) {
             printMessage(e.toString());
         } catch (IOException e) {
-            printError(e.getMessage());
+            printMessage(e.getMessage());
         }
         printLine();
     }

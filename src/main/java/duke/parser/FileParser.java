@@ -1,6 +1,6 @@
 package duke.parser;
 
-public class FileParser {
+public class FileParser extends Parser {
     protected final String[] words;
 
     /**

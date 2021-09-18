@@ -1,47 +1,54 @@
 package duke;
 
+import duke.command.DukeException;
 import duke.data.Storage;
 import duke.parser.InputParser;
 import duke.command.TaskManager;
-import duke.task.Task;
 import duke.ui.Ui;
 
-import java.util.ArrayList;
 import java.io.IOException;
 
 public class Duke {
     protected static boolean isChatting = true;
-    protected static ArrayList<Task> taskList = new ArrayList<>();
-    protected static final String FILE = "saved.txt";
-    protected static final String PATH = "./data/";
-    protected static final String NO_INPUT = "";
+    public static final String FILE = "saved.txt";
+    public static final String PATH = "./data/";
+    public static final String NO_INPUT = "";
 
     protected Ui ui;
     protected Storage storage;
-
+    protected TaskList taskList;
 
     public static void main(String[] args) {
-        new Duke().run();
+        new Duke(PATH + FILE).run();
+    }
+
+    public Duke(String filePath) {
+        this.ui = new Ui();
+        this.storage = new Storage(filePath);
+        try {
+            this.taskList = new TaskList(storage.load(PATH, filePath));
+        } catch (IOException e) {
+            ui.printError(e.getMessage());
+        } catch (DukeException e) {
+            ui.printError(e.toString());
+            taskList = new TaskList();
+        }
     }
 
     private void run() {
-        this.ui = new Ui();
-        this.storage = new Storage();
-
         ui.printLine();
         ui.printWelcomeMessage();
-        try {
-            storage.load(PATH, PATH + FILE);
-        } catch (IOException e) {
-            ui.printError(e.toString());
-        }
+        new TaskManager(taskList).printTaskList();
         ui.printLine();
 
         while (isChatting) {
             String sentence = ui.getUserMessage();
             InputParser parsedInput = new InputParser(sentence);
-            TaskManager taskManager = new TaskManager(parsedInput.getCommand(), parsedInput.getDescription(), parsedInput.getDate());
+            TaskManager taskManager = new TaskManager(parsedInput, taskList);
             ui.printResponseMessage(taskManager);
+            if (parsedInput.getCommand().equals("bye")) {
+                isChatting = false;
+            }
         }
     }
 }
