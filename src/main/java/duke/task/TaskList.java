@@ -3,6 +3,7 @@ package duke.task;
 import duke.ui.Ui;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class TaskList {
     protected ArrayList<Task> taskList;
