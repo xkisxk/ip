@@ -229,6 +229,6 @@ public class TaskManager {
      */
     private void autoSaveFile() throws IOException {
         Storage storage = new Storage(PATH + FILE);
-        storage.autoSave(taskList);
+        storage.appendFile(taskList);
     }
 }
