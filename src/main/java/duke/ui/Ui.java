@@ -19,6 +19,8 @@ public class Ui {
     protected final String DELETE_MESSAGE = "Avoiding doing this task?! Just kidding.\nI've deleted this task:";
     protected final String FAILED_TO_ADD_MESSAGE = "There's too much stuff in the task list.\nI can't remember them all.";
     protected final String DONE_MESSAGE = "Good job on completing this task!\nI've marked this task as done:";
+    protected final String NOT_FOUND_MESSAGE = "The task you are searching for does not exist";
+    protected final String FOUND_MESSAGE = "Here are the matching tasks in your list:";
 
     private final Scanner in;
     private final PrintStream out;
@@ -45,6 +47,14 @@ public class Ui {
         for (String m : message) {
             System.out.println(m);
         }
+    }
+
+    public void printFoundMessage() {
+        printMessage(FOUND_MESSAGE);
+    }
+
+    public void printNotFoundMessage() {
+        printMessage(NOT_FOUND_MESSAGE);
     }
 
     public void printError(String message) {

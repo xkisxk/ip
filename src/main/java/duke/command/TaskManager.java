@@ -138,8 +138,22 @@ public class TaskManager {
             // Manually saves the file
             saveFile();
             System.out.println("Saved to saved.txt in ./data");
+            break;
+        case "find":
+            handleFind();
+            break;
         default:
             throw new DukeException("Sorry I don't understand what you mean by \"" + command + "\"");
+        }
+    }
+
+    private void handleFind() {
+        TaskList tasks = taskList.findAllTasks(description);
+        if (tasks.isEmpty()) {
+            ui.printNotFoundMessage();
+        } else {
+            ui.printFoundMessage();
+            ui.printTaskList(tasks);
         }
     }
 
