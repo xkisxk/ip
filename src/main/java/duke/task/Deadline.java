@@ -5,6 +5,13 @@ import duke.exception.DukeException;
 public class Deadline extends Task {
     protected String by;
 
+    /**
+     * Constructor used for creating a deadline from TaskManager
+     *
+     * @param description    description of task
+     * @param by             date of task
+     * @throws DukeException when there is no description or date
+     */
     public Deadline(String description, String by) throws DukeException {
         super(description);
         if (description.equals(NO_INPUT)) {
@@ -16,6 +23,14 @@ public class Deadline extends Task {
         }
     }
 
+    /**
+     * Constructor used for converting deadline from save file to deadline in Duke
+     *
+     * @param description    description of task
+     * @param isDone         status of task
+     * @param by             date of task
+     * @throws DukeException when there is no description or date
+     */
     public Deadline(String description, boolean isDone, String by) throws DukeException {
         super(description, isDone);
         if (description.equals(NO_INPUT)) {

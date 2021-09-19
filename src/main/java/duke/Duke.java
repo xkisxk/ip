@@ -10,7 +10,6 @@ import duke.ui.Ui;
 import java.io.IOException;
 
 public class Duke {
-    protected static boolean isChatting = true;
     public static final String FILE = "saved.txt";
     public static final String PATH = "./data/";
     public static final String NO_INPUT = "";
@@ -38,19 +37,23 @@ public class Duke {
 
     private void run() {
         ui.printLine();
+
         if (storage.isEmpty()) {
             ui.printWelcomeMessage();
         } else {
             ui.printWelcomeBackMessage();
         }
         ui.printTaskList(taskList);
+
         ui.printLine();
 
+        boolean isChatting = true;
         while (isChatting) {
             String sentence = ui.getUserMessage();
             InputParser parsedInput = new InputParser(sentence);
             TaskManager taskManager = new TaskManager(parsedInput, taskList);
             ui.printResponseMessage(taskManager);
+
             if (parsedInput.getCommand().equals("bye")) {
                 isChatting = false;
             }

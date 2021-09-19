@@ -5,6 +5,13 @@ import duke.exception.DukeException;
 public class Event extends Task {
     protected String at;
 
+    /**
+     * Constructor used for creating an event from TaskManager
+     *
+     * @param description    description of task
+     * @param at             date of task
+     * @throws DukeException when there is no description or date
+     */
     public Event(String description, String at) throws DukeException {
         super(description);
         if (description.equals(NO_INPUT)) {
@@ -16,6 +23,14 @@ public class Event extends Task {
         }
     }
 
+    /**
+     * Constructor used for converting events from save file to events in Duke
+     *
+     * @param description    description of task
+     * @param isDone         status of task
+     * @param at             date of task
+     * @throws DukeException when there is no description or date
+     */
     public Event(String description, boolean isDone, String at) throws DukeException {
         super(description, isDone);
         if (description.equals(NO_INPUT)) {
