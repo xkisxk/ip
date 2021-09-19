@@ -24,13 +24,16 @@ public class TaskList {
      */
     public void addTask(Task t) {
         taskList.add(t);
-        ui.printAddedMessage(taskList);
+        ui.printAddedMessage(t);
+        ui.printTaskListSize(taskList);
     }
 
     /**
-     * Finds all tasks that contains the given description
+     * Finds all tasks that contains the given description or date
+     * Allows both MMM DD YYYY and YYYY-MM-DD formats for date
+     * Case insensitive
      *
-     * @param description tasks to find
+     * @param description description/date of task
      * @return list of tasks containing that description
      */
     public TaskList findAllTasks(String description) {
@@ -44,7 +47,15 @@ public class TaskList {
     }
 
     private boolean hasTask(String description, Task task) {
-        return task.getDescription().toLowerCase().contains(description.toLowerCase());
+        // Make search case-insensitive
+        String query = description.toLowerCase();
+        String date = task.getDateAsFormatted().toLowerCase();
+        String taskDescription = task.getDescription().toLowerCase();
+
+        boolean hasDescription = taskDescription.contains(query);
+        boolean hasDate = task.getDate().contains(description) || date.contains(query);
+
+        return hasDescription || hasDate;
     }
 
     /**
@@ -71,11 +82,10 @@ public class TaskList {
      * @param index of the task
      */
     public void deleteTask(int index) {
-        String task = taskList.get(index).toString();
+        Task task = taskList.get(index);
         taskList.remove(index);
-        System.out.println("Avoiding doing this task?! Just kidding.\nI've deleted this task:");
-        System.out.println(task);
-        System.out.println("Now you have " + taskList.size() + " items.");
+        ui.printDeleteMessage(task);
+        ui.printTaskListSize(taskList);
     }
 
     /**

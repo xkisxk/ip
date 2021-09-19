@@ -2,8 +2,12 @@ package duke.task;
 
 import duke.exception.DukeException;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class Deadline extends Task {
-    protected String by;
+    protected LocalDate by;
 
     /**
      * Constructor used for creating a deadline from TaskManager
@@ -17,7 +21,11 @@ public class Deadline extends Task {
         if (description.equals(NO_INPUT)) {
             throw new DukeException("I can't add a deadline that has no description");
         }
-        this.by = by;
+        try {
+            this.by = LocalDate.parse(by);
+        } catch (DateTimeException e) {
+            throw new DukeException("Date in incorrect format, please give in YYYY-MM-DD format");
+        }
         if (by.equals(NO_INPUT)) {
             throw new DukeException("I need a date for this deadline.\nUse /by to tell me the date.");
         }
@@ -36,7 +44,11 @@ public class Deadline extends Task {
         if (description.equals(NO_INPUT)) {
             throw new DukeException("I can't add a deadline that has no description");
         }
-        this.by = by;
+        try {
+            this.by = LocalDate.parse(by);
+        } catch (DateTimeException e) {
+            throw new DukeException("Date in incorrect format, please give in YYYY-MM-DD format");
+        }
         if (by.equals(NO_INPUT)) {
             throw new DukeException("I need a date for this deadline.\nUse /by to tell me the date.");
         }
@@ -49,11 +61,16 @@ public class Deadline extends Task {
 
     @Override
     public String getDate() {
-        return by;
+        return by.toString();
+    }
+
+    @Override
+    public String getDateAsFormatted() {
+        return by.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
     }
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + by + ")";
+        return "[D]" + super.toString() + " (by: " + this.getDateAsFormatted() + ")";
     }
 }

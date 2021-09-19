@@ -20,6 +20,8 @@ public class Ui {
     protected final String DONE_MESSAGE = "Good job on completing this task!\nI've marked this task as done:";
     protected final String NOT_FOUND_MESSAGE = "The task you are searching for does not exist";
     protected final String FOUND_MESSAGE = "Here are the matching tasks in your list:";
+    protected final String DELETE_MESSAGE = "Avoiding doing this task?! Just kidding.\nI've deleted this task:";
+    protected final String OFFSET = "   ";
 
     private final Scanner in;
     private final PrintStream out;
@@ -46,6 +48,16 @@ public class Ui {
         for (String m : message) {
             System.out.println(m);
         }
+    }
+
+    public void printDeleteMessage(Task task) {
+        printMessage(
+                DELETE_MESSAGE,
+                OFFSET + task.toString());
+    }
+
+    public void printTaskListSize(ArrayList<Task> taskList) {
+        printMessage("Now you have " + taskList.size() + " items.");
     }
 
     /**
@@ -112,9 +124,10 @@ public class Ui {
         printMessage(FAILED_TO_ADD_MESSAGE);
     }
 
-    public void printAddedMessage(ArrayList<Task> taskList) {
-        printMessage("Got it. I have added this task:\n   " + taskList.get(taskList.size() - 1),
-                "Now you have " + taskList.size() + " tasks in the list.");
+    public void printAddedMessage(Task task) {
+        printMessage(
+                "Got it. I have added this task:",
+                OFFSET + task);
     }
 
     /**
@@ -125,7 +138,9 @@ public class Ui {
     }
 
     public void printDoneMessage(Task task) {
-        printMessage(DONE_MESSAGE, task.toString());
+        printMessage(
+                DONE_MESSAGE,
+                OFFSET + task);
     }
 
     /**
