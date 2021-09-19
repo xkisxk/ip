@@ -36,6 +36,15 @@ public class Task {
     }
 
     /**
+     * Gets the date of the task in MMM d YYYY format
+     *
+     * @return date
+     */
+    public String getDateAsFormatted() {
+        return NO_INPUT;
+    }
+
+    /**
      * Gets the tag of the task, e.g. T for ToDo
      *
      * @return task tag
@@ -71,15 +80,6 @@ public class Task {
      */
     public String getDescription() {
         return description;
-    }
-
-    /**
-     * Returns the status of the task
-     *
-     * @return is done
-     */
-    public boolean getIsDone() {
-        return isDone;
     }
 
     /**

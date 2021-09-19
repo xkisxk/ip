@@ -23,7 +23,7 @@ public class TaskManager {
      * TaskManager handles all the commands from input that comes from both CLI and save file.
      * If the command exists, task manager will execute it, else it will raise an error.
      *
-     * @param parser the input parser
+     * @param parser   the input parser
      * @param taskList list of tasks
      */
     public TaskManager(Parser parser, TaskList taskList) {
@@ -36,7 +36,7 @@ public class TaskManager {
     }
 
     /**
-     * Adds the tasks from the saved file to the list, essentially restoring the previous list state
+     * Adds the tasks from the saved file to the list, restoring the previous list state
      */
     public void convertSaveToTasks() {
         switch (command) {
@@ -92,10 +92,10 @@ public class TaskManager {
     }
 
     /**
-     * Handles commands from the input from command line based on the command word, which is the first word from input.
+     * Executes commands from the input from command line based on the command word, which is the first word from input.
      *
      * @throws DukeException if command is not defined under cases
-     * @throws IOException if save file does not exist
+     * @throws IOException   if save file does not exist
      */
     public void handleCommand() throws DukeException, IOException {
         switch (command) {
@@ -117,7 +117,7 @@ public class TaskManager {
         case "done":
             // Marks task x as done where x is the index.
             handleDone();
-            saveFile();
+            overwriteSaveFile();
             break;
         case "list":
             // Lists out all the tasks that are added with the command "list".
@@ -127,19 +127,34 @@ public class TaskManager {
         case "bye":
             // Ends conversation
             ui.printGoodbyeMessage();
-            saveFile();
+            overwriteSaveFile();
             break;
         case "delete":
             // Delete a task
             handleDelete();
-            saveFile();
+            overwriteSaveFile();
             break;
         case "save":
             // Manually saves the file
-            saveFile();
+            overwriteSaveFile();
             System.out.println("Saved to saved.txt in ./data");
+            break;
+        case "find":
+            // Finds if task with the description exists
+            handleFind();
+            break;
         default:
             throw new DukeException("Sorry I don't understand what you mean by \"" + command + "\"");
+        }
+    }
+
+    private void handleFind() {
+        TaskList tasks = taskList.findAllTasks(description);
+        if (tasks.isEmpty()) {
+            ui.printNotFoundMessage();
+        } else {
+            ui.printFoundMessage();
+            ui.printTaskList(tasks);
         }
     }
 
@@ -151,7 +166,7 @@ public class TaskManager {
             int index = Integer.parseInt(description) - 1;
             taskList.deleteTask(index);
         } catch (IndexOutOfBoundsException e) {
-            System.out.println("There is no item at that index. You have " + taskList.size() + " items.");
+            System.out.println("There is no item at that index. You have " + taskList.getSize() + " items.");
         } catch (NumberFormatException e) {
             System.out.println("\"" + description + "\" is not a number...");
         }
@@ -167,7 +182,7 @@ public class TaskManager {
             task.markDone();
             ui.printDoneMessage(task);
         } catch (NullPointerException e) {
-            System.out.println("There is no item at that index. You have " + taskList.size() + " items.");
+            System.out.println("There is no item at that index. You have " + taskList.getSize() + " items.");
         } catch (NumberFormatException e) {
             System.out.println("\"" + description + "\" is not a number...");
         }
@@ -217,13 +232,13 @@ public class TaskManager {
      *
      * @throws IOException if file does not exist
      */
-    public void saveFile() throws IOException {
+    public void overwriteSaveFile() throws IOException {
         Storage storage = new Storage(PATH + FILE);
         storage.save(taskList);
     }
 
     /**
-     * Appends a newly added task into the save file.
+     * Appends a newly added task into the save file, gets called
      *
      * @throws IOException if file does not exist
      */
