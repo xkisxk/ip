@@ -1,7 +1,7 @@
 package duke.ui;
 
 import duke.exception.DukeException;
-import duke.command.TaskManager;
+import duke.command.CommandManager;
 import duke.task.Task;
 import duke.task.TaskList;
 
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Ui {
-    protected final String LINE_SEPARATOR = "_______________________________________________________";
+    protected final String LINE_SEPARATOR = "____________________________________________________________";
     protected final String WELCOME_MESSAGE = "...... Oh, sorry! I didn't see you there.\nI'm Alex. How may I help you?";
     protected final String WELCOME_BACK_MESSAGE = "Welcome back! How are you doing?\nHere are the tasks from last time:";
     protected final String GOODBYE_MESSAGE = "Bye. Talk to you later!";
@@ -111,12 +111,12 @@ public class Ui {
     /**
      * Prints the response message to the given command
      *
-     * @param taskManager handles the command
+     * @param commandManager handles the command
      */
-    public void printResponseMessage(TaskManager taskManager) {
+    public void printResponseMessage(CommandManager commandManager) {
         printLine();
         try {
-            taskManager.handleCommand();
+            commandManager.handleCommand();
         } catch (DukeException e) {
             printMessage(e.toString());
         } catch (IOException e) {
@@ -153,7 +153,7 @@ public class Ui {
      * E.g. 1. [T] buy bread
      *      2. [D] homework (by: 26/4)
      */
-    public void printTaskList(TaskList taskList) {
+    public void printTaskList(TaskList taskList) throws DukeException {
         for (int i = 0; i < taskList.getSize(); i++) {
             String item = i + 1 + "." + taskList.getTask(i).toString();
             printMessage(item);

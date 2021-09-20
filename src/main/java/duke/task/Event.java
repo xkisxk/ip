@@ -24,10 +24,10 @@ public class Event extends Task {
         try {
             this.eventAt = LocalDate.parse(eventAt);
         } catch (DateTimeException e) {
+            if (eventAt.equals(NO_INPUT)) {
+                throw new DukeException("I need a date for this event.\nUse /at to tell me the date.");
+            }
             throw new DukeException("Date in incorrect format, please give in YYYY-MM-DD format");
-        }
-        if (eventAt.equals(NO_INPUT)) {
-            throw new DukeException("I need a date for this event.\nUse /at to tell me the date.");
         }
     }
 
@@ -47,10 +47,10 @@ public class Event extends Task {
         try {
             this.eventAt = LocalDate.parse(eventAt);
         } catch (DateTimeException e) {
+            if (eventAt.equals(NO_INPUT)) {
+                throw new DukeException("I need a date for this event.\nUse /at to tell me the date.");
+            }
             throw new DukeException("Date in incorrect format, please give in YYYY-MM-DD format");
-        }
-        if (eventAt.equals(NO_INPUT)) {
-            throw new DukeException("I need a date for this event.\nUse /at to tell me the date.");
         }
     }
 

@@ -24,10 +24,10 @@ public class Deadline extends Task {
         try {
             this.by = LocalDate.parse(by);
         } catch (DateTimeException e) {
+            if (by.equals(NO_INPUT)) {
+                throw new DukeException("I need a date for this deadline.\nUse /by to tell me the date.");
+            }
             throw new DukeException("Date in incorrect format, please give in YYYY-MM-DD format");
-        }
-        if (by.equals(NO_INPUT)) {
-            throw new DukeException("I need a date for this deadline.\nUse /by to tell me the date.");
         }
     }
 
@@ -47,10 +47,10 @@ public class Deadline extends Task {
         try {
             this.by = LocalDate.parse(by);
         } catch (DateTimeException e) {
+            if (by.equals(NO_INPUT)) {
+                throw new DukeException("I need a date for this deadline.\nUse /by to tell me the date.");
+            }
             throw new DukeException("Date in incorrect format, please give in YYYY-MM-DD format");
-        }
-        if (by.equals(NO_INPUT)) {
-            throw new DukeException("I need a date for this deadline.\nUse /by to tell me the date.");
         }
     }
 

@@ -1,12 +1,13 @@
 package duke.task;
 
+import duke.exception.DukeException;
 import duke.ui.Ui;
 
 import java.util.ArrayList;
 
 public class TaskList {
     protected ArrayList<Task> taskList;
-    private Ui ui = new Ui();
+    private final Ui ui = new Ui();
 
     public TaskList() {
         this.taskList = new ArrayList<>();
@@ -90,10 +91,14 @@ public class TaskList {
     /**
      * Gets the task inside the list using the index
      *
+     * @throws DukeException if index is out of bounds
      * @param index of the task
      * @return task at that index
      */
-    public Task getTask(int index) {
+    public Task getTask(int index) throws DukeException {
+        if (index >= taskList.size() || index < 0) {
+            throw new DukeException("There is no item at that index. You have " + taskList.size() + " items.");
+        }
         return taskList.get(index);
     }
 

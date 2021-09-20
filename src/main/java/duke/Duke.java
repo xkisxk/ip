@@ -3,7 +3,7 @@ package duke;
 import duke.exception.DukeException;
 import duke.data.Storage;
 import duke.parser.InputParser;
-import duke.command.TaskManager;
+import duke.command.CommandManager;
 import duke.task.TaskList;
 import duke.ui.Ui;
 
@@ -43,7 +43,12 @@ public class Duke {
         } else {
             ui.printWelcomeBackMessage();
         }
-        ui.printTaskList(taskList);
+
+        try {
+            ui.printTaskList(taskList);
+        } catch (DukeException e) {
+            ui.printError(e.toString());
+        }
 
         ui.printLine();
 
@@ -51,8 +56,8 @@ public class Duke {
         while (isChatting) {
             String sentence = ui.getUserMessage();
             InputParser parsedInput = new InputParser(sentence);
-            TaskManager taskManager = new TaskManager(parsedInput, taskList);
-            ui.printResponseMessage(taskManager);
+            CommandManager commandManager = new CommandManager(parsedInput, taskList);
+            ui.printResponseMessage(commandManager);
 
             if (parsedInput.getCommand().equals("bye")) {
                 isChatting = false;

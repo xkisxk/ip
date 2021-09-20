@@ -15,13 +15,13 @@ import java.io.IOException;
 import static duke.Duke.PATH;
 import static duke.Duke.FILE;
 
-public class TaskManager {
+public class CommandManager {
     protected TaskList taskList;
     protected String command;
     protected String description;
     protected String date;
     protected boolean isDone;
-    private final Ui ui;
+    protected final Ui ui;
 
     /**
      * TaskManager handles all the commands from input that comes from both CLI and save file.
@@ -30,7 +30,7 @@ public class TaskManager {
      * @param parser   the input parser
      * @param taskList list of tasks
      */
-    public TaskManager(Parser parser, TaskList taskList) {
+    public CommandManager(Parser parser, TaskList taskList) {
         this.command = parser.getCommand();
         this.description = parser.getDescription();
         this.date = parser.getDate();
@@ -147,7 +147,7 @@ public class TaskManager {
         }
     }
 
-    private void handleFind() {
+    private void handleFind() throws DukeException {
         TaskList tasks = taskList.findAllTasks(description);
         if (tasks.isEmpty()) {
             ui.printNotFoundMessage();
@@ -190,6 +190,8 @@ public class TaskManager {
             System.out.println("\"" + description + "\" is not a number...");
         } catch (IOException e) {
             ui.printError(e.getMessage());
+        } catch (DukeException e) {
+            ui.printError(e.toString());
         }
     }
 
@@ -256,7 +258,7 @@ public class TaskManager {
      *
      * @throws IOException if file does not exist
      */
-    private void autoSaveFile() throws IOException {
+    protected void autoSaveFile() throws IOException, DukeException {
         Storage storage = new Storage(PATH + FILE);
         storage.appendFile(taskList);
     }
