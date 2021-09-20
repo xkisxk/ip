@@ -21,6 +21,7 @@ public class Ui {
     protected final String NOT_FOUND_MESSAGE = "The task you are searching for does not exist";
     protected final String FOUND_MESSAGE = "Here are the matching tasks in your list:";
     protected final String DELETE_MESSAGE = "Avoiding doing this task?! Just kidding.\nI've deleted this task:";
+    protected final String SAVED_MESSAGE = "Saved to saved.txt in ./data";
     protected final String OFFSET = "   ";
 
     private final Scanner in;
@@ -54,6 +55,10 @@ public class Ui {
         printMessage(
                 DELETE_MESSAGE,
                 OFFSET + task.toString());
+    }
+
+    public void printSaveMessage() {
+        printMessage(SAVED_MESSAGE);
     }
 
     public void printTaskListSize(ArrayList<Task> taskList) {

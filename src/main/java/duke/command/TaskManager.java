@@ -136,7 +136,7 @@ public class TaskManager {
         case "save":
             // Manually saves the file
             overwriteSaveFile();
-            System.out.println("Saved to saved.txt in ./data");
+            ui.printSaveMessage();
             break;
         case "find":
             // Finds if task with the description exists

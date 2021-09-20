@@ -56,6 +56,23 @@ Got it. I have added this task:
 Now you have 3 items.
 ```
 
+### Mark task as done
+**Format:** `done <index>`
+
+Marks the task at the given index as done and prints a task done message. Prints an error message if index is out of bounds.
+
+Example of usage:
+
+`done 3`
+
+Expected outcome:
+
+```
+Good job on completing this task!
+I've marked this task as done:
+   [E][X] CS2113T Lecture (at: Sep 17 2021)
+```
+
 ### List all tasks
 **Format:** `list`
 
@@ -125,6 +142,21 @@ Avoiding doing this task?! Just kidding.
 I've deleted this task:
    [D][ ] CS2113T Quiz (by: Oct 1 2021)
 Now you have 5 items.
+```
+
+### Save
+**Format:** `save`
+
+Saves the current list to a txt file. Prints a saved message.
+
+Example of usage:
+
+`save`
+
+Expected outcome:
+
+```
+Saved to saved.txt in ./data
 ```
 
 ### Exit
