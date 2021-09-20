@@ -1,5 +1,13 @@
 # User Guide
-Duke is a desktop app that can create and list different types of tasks via a Command Line Interface (CLI).
+Duke is a desktop app that can create, delete, list and save different types of tasks via a Command Line Interface (CLI).
+
+## Requirements
+Java 11
+
+## Quick Start
+1. Download ip.jar
+2. Go to command prompt and change to the directory that contains ip.jar
+3. Run by typing `java -jar ip.jar`
 
 ## Features
 
