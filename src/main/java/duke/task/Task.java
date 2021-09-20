@@ -86,7 +86,7 @@ public class Task {
      * Marks the task as done by changing the boolean isDone to true.
      */
     public void markDone() {
-        isDone = true;
+        this.isDone = true;
     }
 
     /**

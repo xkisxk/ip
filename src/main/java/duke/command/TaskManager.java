@@ -1,7 +1,11 @@
 package duke.command;
 
 import duke.exception.DukeException;
-import duke.task.*;
+import duke.task.Deadline;
+import duke.task.Event;
+import duke.task.Task;
+import duke.task.TaskList;
+import duke.task.ToDo;
 import duke.data.Storage;
 import duke.parser.Parser;
 import duke.ui.Ui;
@@ -17,7 +21,7 @@ public class TaskManager {
     protected String description;
     protected String date;
     protected boolean isDone;
-    private Ui ui;
+    private final Ui ui;
 
     /**
      * TaskManager handles all the commands from input that comes from both CLI and save file.
@@ -38,7 +42,7 @@ public class TaskManager {
     /**
      * Adds the tasks from the saved file to the list, restoring the previous list state
      */
-    public void convertSaveToTasks() {
+    public void convertSavedTasksToDukeTasks() {
         switch (command) {
         case "t":
             convertToDo();
@@ -102,22 +106,18 @@ public class TaskManager {
         case "todo":
             // Labels task as T
             handleToDo();
-            autoSaveFile();
             break;
         case "event":
             // Labels task as E and also takes in a date
             handleEvent();
-            autoSaveFile();
             break;
         case "deadline":
             // Labels task as D and also takes in a date
             handleDeadline();
-            autoSaveFile();
             break;
         case "done":
             // Marks task x as done where x is the index.
             handleDone();
-            overwriteSaveFile();
             break;
         case "list":
             // Lists out all the tasks that are added with the command "list".
@@ -132,7 +132,6 @@ public class TaskManager {
         case "delete":
             // Delete a task
             handleDelete();
-            overwriteSaveFile();
             break;
         case "save":
             // Manually saves the file
@@ -165,10 +164,13 @@ public class TaskManager {
         try {
             int index = Integer.parseInt(description) - 1;
             taskList.deleteTask(index);
+            overwriteSaveFile();
         } catch (IndexOutOfBoundsException e) {
             System.out.println("There is no item at that index. You have " + taskList.getSize() + " items.");
         } catch (NumberFormatException e) {
             System.out.println("\"" + description + "\" is not a number...");
+        } catch (IOException e) {
+            ui.printError(e.getMessage());
         }
     }
 
@@ -181,10 +183,13 @@ public class TaskManager {
             Task task = taskList.getTask(index - 1);
             task.markDone();
             ui.printDoneMessage(task);
+            overwriteSaveFile();
         } catch (NullPointerException e) {
             System.out.println("There is no item at that index. You have " + taskList.getSize() + " items.");
         } catch (NumberFormatException e) {
             System.out.println("\"" + description + "\" is not a number...");
+        } catch (IOException e) {
+            ui.printError(e.getMessage());
         }
     }
 
@@ -194,10 +199,13 @@ public class TaskManager {
     private void handleDeadline() {
         try {
             taskList.addTask(new Deadline(description, date));
+            autoSaveFile();
         } catch (ArrayIndexOutOfBoundsException e) {
             ui.printFailedToAddMessage();
         } catch (DukeException e) {
             ui.printError(e.toString());
+        } catch (IOException e) {
+            ui.printError(e.getMessage());
         }
     }
 
@@ -207,10 +215,13 @@ public class TaskManager {
     private void handleEvent() {
         try {
             taskList.addTask(new Event(description, date));
+            autoSaveFile();
         } catch (ArrayIndexOutOfBoundsException e) {
             ui.printFailedToAddMessage();
         } catch (DukeException e) {
             ui.printError(e.toString());
+        } catch (IOException e) {
+            ui.printError(e.getMessage());
         }
     }
 
@@ -220,10 +231,13 @@ public class TaskManager {
     private void handleToDo() {
         try {
             taskList.addTask(new ToDo(description));
+            autoSaveFile();
         } catch (ArrayIndexOutOfBoundsException e) {
             ui.printFailedToAddMessage();
         } catch (DukeException e) {
             ui.printError(e.toString());
+        } catch (IOException e) {
+            ui.printError(e.getMessage());
         }
     }
 

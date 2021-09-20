@@ -7,26 +7,26 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Event extends Task {
-    protected LocalDate at;
+    protected LocalDate eventAt;
 
     /**
      * Constructor used for creating an event from TaskManager
      *
      * @param description    description of task
-     * @param at             date of task
+     * @param eventAt             date of task
      * @throws DukeException when there is no description or date
      */
-    public Event(String description, String at) throws DukeException {
+    public Event(String description, String eventAt) throws DukeException {
         super(description);
         if (description.equals(NO_INPUT)) {
             throw new DukeException("I can't add an event that has no description");
         }
         try {
-            this.at = LocalDate.parse(at);
+            this.eventAt = LocalDate.parse(eventAt);
         } catch (DateTimeException e) {
             throw new DukeException("Date in incorrect format, please give in YYYY-MM-DD format");
         }
-        if (at.equals(NO_INPUT)) {
+        if (eventAt.equals(NO_INPUT)) {
             throw new DukeException("I need a date for this event.\nUse /at to tell me the date.");
         }
     }
@@ -36,20 +36,20 @@ public class Event extends Task {
      *
      * @param description    description of task
      * @param isDone         status of task
-     * @param at             date of task
+     * @param eventAt             date of task
      * @throws DukeException when there is no description or date
      */
-    public Event(String description, boolean isDone, String at) throws DukeException {
+    public Event(String description, boolean isDone, String eventAt) throws DukeException {
         super(description, isDone);
         if (description.equals(NO_INPUT)) {
             throw new DukeException("I can't add an event that has no description");
         }
         try {
-            this.at = LocalDate.parse(at);
+            this.eventAt = LocalDate.parse(eventAt);
         } catch (DateTimeException e) {
             throw new DukeException("Date in incorrect format, please give in YYYY-MM-DD format");
         }
-        if (at.equals(NO_INPUT)) {
+        if (eventAt.equals(NO_INPUT)) {
             throw new DukeException("I need a date for this event.\nUse /at to tell me the date.");
         }
     }
@@ -61,12 +61,12 @@ public class Event extends Task {
 
     @Override
     public String getDate() {
-        return at.toString();
+        return eventAt.toString();
     }
 
     @Override
     public String getDateAsFormatted() {
-        return at.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
+        return eventAt.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
     }
 
     @Override
