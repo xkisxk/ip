@@ -11,13 +11,13 @@ Java 11
 
 ## Features
 Summary of available features:
-1. Adding todo/event/deadline tasks
-2. Marking tasks as done
-3. List tasks
-4. Finding tasks
-5. Deleting tasks
-6. Saving task list
-7. Exit
+1. [Adding todo/event/deadline tasks](#add-todo-task)
+2. [Marking tasks as done](#mark-task-as-done)
+3. [List tasks](#list-all-tasks)
+4. [Finding tasks](#find-task)
+5. [Deleting tasks](#delete-task)
+6. [Saving task list](#save)
+7. [Exit](#exit)
 
 ### Add todo task 
 **Format:** `todo <description of the task>`
