@@ -10,6 +10,14 @@ Java 11
 3. Run by typing `java -jar ip.jar`
 
 ## Features
+Summary of available features:
+1. Adding todo/event/deadline tasks
+2. Marking tasks as done
+3. List tasks
+4. Finding tasks
+5. Deleting tasks
+6. Saving task list
+7. Exit
 
 ### Add todo task 
 **Format:** `todo <description of the task>`
