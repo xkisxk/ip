@@ -21,6 +21,7 @@ public class CommandManager {
     protected String description;
     protected String date;
     protected boolean isDone;
+    protected Parser parser;
     protected final Ui ui;
 
     /**
@@ -36,6 +37,7 @@ public class CommandManager {
         this.date = parser.getDate();
         this.isDone = parser.getDone();
         this.taskList = taskList;
+        this.parser = parser;
         this.ui = new Ui();
     }
 
@@ -198,7 +200,10 @@ public class CommandManager {
     /**
      * Adds a deadline task into the task list
      */
-    private void handleDeadline() {
+    private void handleDeadline() throws DukeException {
+        if (!parser.getDateKeyword().contains("by")) {
+            throw new DukeException("I need a /by to understand the date.");
+        }
         try {
             taskList.addTask(new Deadline(description, date));
             autoSaveFile();
@@ -214,7 +219,10 @@ public class CommandManager {
     /**
      * Adds an event task into the task list
      */
-    private void handleEvent() {
+    private void handleEvent() throws DukeException {
+        if (!parser.getDateKeyword().contains("at")) {
+            throw new DukeException("I need a /at to understand the date.");
+        }
         try {
             taskList.addTask(new Event(description, date));
             autoSaveFile();

@@ -28,4 +28,11 @@ public abstract class Parser {
      * @return done status
      */
     public abstract boolean getDone();
+
+    /**
+     * Gets the date keyword which are either "/at" or "/by"
+     *
+     * @return
+     */
+    public abstract String getDateKeyword();
 }

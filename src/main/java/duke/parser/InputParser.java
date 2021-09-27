@@ -69,6 +69,15 @@ public class InputParser extends Parser {
         return dateAsString.trim();
     }
 
+    public String getDateKeyword() {
+        int keywordIndex = getKeywordIndex();
+        if (keywordIndex == -1) {
+            return NO_INPUT;
+        }
+        String keyword = words[keywordIndex];
+        return keyword.trim().toLowerCase();
+    }
+
     private int getKeywordIndex() {
         int keywordIndex = -1;
         for (int i = 0; i < words.length; i++) {

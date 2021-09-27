@@ -1,5 +1,7 @@
 package duke.parser;
 
+import static duke.Duke.NO_INPUT;
+
 public class FileParser extends Parser {
     protected final String[] words;
 
@@ -18,6 +20,11 @@ public class FileParser extends Parser {
 
     public boolean getDone() {
         return words[1].replaceAll(" ", "").equals("1");
+    }
+
+    @Override
+    public String getDateKeyword() {
+        return NO_INPUT;
     }
 
     public String getDescription() {
