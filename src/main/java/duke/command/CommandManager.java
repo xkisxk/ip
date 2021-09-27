@@ -202,7 +202,7 @@ public class CommandManager {
      */
     private void handleDeadline() throws DukeException {
         if (!parser.getDateKeyword().contains("by")) {
-            throw new DukeException("I need a /by to understand the date.");
+            throw new DukeException("I need a /by to understand the date for a deadline task.");
         }
         try {
             taskList.addTask(new Deadline(description, date));
@@ -221,7 +221,7 @@ public class CommandManager {
      */
     private void handleEvent() throws DukeException {
         if (!parser.getDateKeyword().contains("at")) {
-            throw new DukeException("I need a /at to understand the date.");
+            throw new DukeException("I need a /at to understand the date for an event task.");
         }
         try {
             taskList.addTask(new Event(description, date));
